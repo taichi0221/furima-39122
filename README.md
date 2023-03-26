@@ -37,6 +37,11 @@
 
 - belongs_to :user
 - has_one :buy
+- belongs_to :category
+- belongs_to :situation
+- belongs_to :prefecture
+- belongs_to :shipping_day
+- belongs_to :delivery_charge
 
 ## buys テーブル
 
@@ -68,3 +73,4 @@
 ### Association
 
 - belongs_to :buy
+- belongs_to :prefecture_id
