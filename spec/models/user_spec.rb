@@ -6,7 +6,7 @@ RSpec.describe User, type: :model do
   end
   describe "ユーザー新規登録" do
     context '新規登録できる場合' do
-      it "nameとemail、passwordとpassword_confirmationが存在すれば登録できる" do
+      it "nameとemail、passwordとpassword_confirmation、last_nameとfirst_name、last_name_kanaとfirst_name_kana、birth_dayが存在すれば登録できる" do
         expect(@user).to be_valid
       end
     end
@@ -27,58 +27,58 @@ RSpec.describe User, type: :model do
         @user.valid?
         expect(@user.errors.full_messages).to include("Password can't be blank")
       end
-      it "苗字が空では登録できない" do
+      it "last_nameが空では登録できない" do
         @user.last_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name can't be blank")
       end
-      it "苗字が半角では登録できない" do
+      it "last_nameが半角では登録できない" do
         @user.last_name = 'ﾑﾀ'
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name Input full-width characters")
       end
-      it "名前が空では登録できない" do
+      it "first_nameが空では登録できない" do
         @user.first_name = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("First name can't be blank")
       end
-      it "名前が半角では登録できない" do
+      it "first_nameが半角では登録できない" do
         @user.first_name = 'ﾀｲﾁ'
         @user.valid?
         expect(@user.errors.full_messages).to include("First name Input full-width characters")
       end
-      it "苗字のカナが空では登録できない" do
+      it "last_name_kanaが空では登録できない" do
         @user.last_name_kana = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name kana can't be blank")
       end
-      it "苗字のカナがひらがなと漢字では登録できない" do
+      it "last_name_kanaがひらがなと漢字では登録できない" do
         @user.last_name_kana = 'む田'
         @user.valid?
         expect(@user.errors.full_messages).to include("Last name kana is invalid. Input full-width katakana characters")
       end
-      it "名前のカナが空では登録できない" do
+      it "first_name_kanaが空では登録できない" do
         @user.first_name_kana = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana can't be blank")
       end
-      it "名前のカナがひらがなと漢字では登録できない" do
+      it "first_name_kanaがひらがなと漢字では登録できない" do
         @user.first_name_kana = 'た一'
         @user.valid?
         expect(@user.errors.full_messages).to include("First name kana is invalid. Input full-width katakana characters")
       end
-      it "誕生日が空では登録できない" do
+      it "birth_dayが空では登録できない" do
         @user.birth_day = ''
         @user.valid?
         expect(@user.errors.full_messages).to include("Birth day can't be blank")
       end
-      it "パスワードと確認パスワードが不一致では登録できない" do
+      it "passwordとpassword_confirmationが不一致では登録できない" do
         @user.password = 'user99'
         @user.password_confirmation = 'user100'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password confirmation doesn't match Password")
       end
-      it "パスワードは数字と英語組み合わせないと登録できない" do
+      it "passwordは数字と英語を組み合わせないと登録できない" do
         @user.password = '000000'
         @user.valid?
         expect(@user.errors.full_messages).to include("Password Include both letters and numbers")
