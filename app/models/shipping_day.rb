@@ -1,16 +1,10 @@
 class ShippingDay < ActiveHash::Base
   self.data = [
     { id: 1, name: '---' },
-    { id: 2, name: '' },
-    { id: 3, name: '' },
-    { id: 4, name: '' },
-    { id: 5, name: '' },
-    { id: 6, name: '' },
-    { id: 7, name: '' },
-    { id: 8, name: '' },
-    { id: 9, name: '' },
-    { id: 10, name: '' }
-  ]
+    { id: 2, name: '１～２日で発送' },
+    { id: 3, name: '２～３日で発送' },
+    { id: 4, name: '４～７日で発送' },
+    ]
 
   include ActiveHash::Associations
   has_many :items
