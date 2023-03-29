@@ -15,7 +15,6 @@ class Item < ApplicationRecord
   validates :delivery_charge_id, presence: true,numericality: { other_than: 1 , message: "can't be blank"}
   validates :price, presence: true,             numericality: { greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999 }
   validates :price,                             numericality: { only_integer: true, greater_than_or_equal_to: 300, less_than_or_equal_to: 9999999 }
-  validates :price, format: { with: /\A[0-9]+\z/ }
   validates :name, presence: true 
   validates :explanation , presence: true
   validates :image, presence: true
