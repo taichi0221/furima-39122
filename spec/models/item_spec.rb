@@ -11,5 +11,23 @@ RSpec.describe Item, type: :model do
         expect(@item).to be_valid
       end
     end
+    context '商品が出品できない場合' do
+      it 'nameが空では保存できない' do
+        @item.name = ''
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Name can't be blank")
+      end
+      it 'explanationが空では保存できない' do
+        @item.explanation = ''
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Explanation can't be blank")
+      end
+      it 'priceが空では保存できない' do
+        @item.price = ''
+        @item.valid?
+        expect(@item.errors.full_messages).to include("Price can't be blank")
+      end
+      
+    end
   end
 end
