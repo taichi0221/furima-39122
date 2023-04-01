@@ -7,7 +7,7 @@ RSpec.describe BuyShippingAddress, type: :model do
 
   describe '商品購入' do
     context '商品が購入できる場合' do
-      it 'post_code, prefecture_id, municipality, address, building, tel_numberが存在し,buy_idが空ならば保存できる' do
+      it 'post_code, prefecture_id, municipality, address, building, tel_numberが存在すれば保存できる' do
         expect(@buy_shipping_address).to be_valid
       end
       it 'buildingは空でも保存できる' do
@@ -21,6 +21,11 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.post_code = ''
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Post code can't be blank")
+      end
+      it 'post_codeが3桁ハイフン4桁の半角文字列でないと保存できない' do
+        @buy_shipping_address.post_code = '1234567'
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
       end
       it 'prefecture_idが空だと保存できない' do
         @buy_shipping_address.prefecture_id = ''
@@ -42,6 +47,16 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Tel number can't be blank")
       end
+      it 'tel_numberが9桁以下だと保存できない' do
+        @buy_shipping_address.tel_number = '123456789'
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Tel number is too short (minimum is 10 characters)")
+      end
+      it 'tel_numberが全角数値だと保存できない' do
+        @buy_shipping_address.tel_number = '１２３４５６７８９０１'
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Tel number is not a number")
+      end
       it 'user_idが空だと保存できない' do
         @buy_shipping_address.user_id = ''
         @buy_shipping_address.valid?
@@ -52,13 +67,9 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Item can't be blank")
       end
-      it 'buy_idが存在すると保存できない' do
-        @buy_shipping_address.item_id = '1'
-        @buy_shipping_address.valid?
-    
-        expect(@buy_shipping_address.errors.full_messages).to include("")
-      end
+      
 
     end
   end
 end
+
