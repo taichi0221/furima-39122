@@ -10,12 +10,12 @@ class BuyShippingAddress
   validates :address, presence: true
   validates :tel_number, presence: true, length: { minimum: 10, maximum: 11 }, numericality: { only_integer: true }
   validates :buy_id, presence: true, on: :create
-  
+
   def save
   
     buy = Buy.create(user_id: user_id,item_id: item_id)
   
-    ShippingAddress.create(post_code: post_code, prefecture_id: prefecture_id, municipality: municipality, address: address, building: building, tel_number: tel_number, buy_id: buy_id)
+    ShippingAddress.create(post_code: post_code, prefecture_id: prefecture_id, municipality: municipality, address: address, building: building, tel_number: tel_number, buy_id: buy.id)
   end
 
 end
