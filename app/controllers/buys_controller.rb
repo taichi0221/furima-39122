@@ -11,6 +11,7 @@ class BuysController < ApplicationController
       @buy_shipping_address.save
       redirect_to root_path
     else
+      @item = Item.find(params[:item_id])
       render :new
     end
   end
@@ -18,6 +19,6 @@ class BuysController < ApplicationController
   private
 
   def buy_params
-    params.require(:buy_shipping_address).permit(:post_code, :prefecture_id, :municipality, :address, :building, :tel_number)merge(item_id: item_id, user_id: current_user.id)
-
+    params.require(:buy_shipping_address).permit(:post_code, :prefecture_id, :municipality, :address, :building, :tel_number).merge(item_id: params[:item_id], user_id: current_user.id)
+  end
 end
