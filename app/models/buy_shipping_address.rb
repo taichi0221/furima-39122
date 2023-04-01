@@ -9,8 +9,8 @@ class BuyShippingAddress
   validates :municipality, presence: true
   validates :address, presence: true
   validates :tel_number, presence: true, length: { minimum: 10, maximum: 11 }, numericality: { only_integer: true }
-  validates :buy_id, presence: true
-
+  validates :buy_id, presence: true, on: :create
+  
   def save
   
     buy = Buy.create(user_id: user_id,item_id: item_id)
