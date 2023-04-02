@@ -23,7 +23,7 @@
       </span>
     </div>
     
-    <% if @item.buy.present? && @item.buy.id.present? %>
+    <% if @item.buy.present? %>
     <% else %>
       <% if user_signed_in? %>
         <% if current_user.id == @item.user_id %>

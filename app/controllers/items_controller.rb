@@ -55,7 +55,7 @@ class ItemsController < ApplicationController
 
   def move_to_index_sold_out
     @item = Item.find(params[:id])
-    if @item.buy.present? && @item.buy.id.present?
+    if @item.buy.present?
       redirect_to action: :index
     end
   end

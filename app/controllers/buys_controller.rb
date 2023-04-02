@@ -28,7 +28,7 @@ class BuysController < ApplicationController
 
   def move_to_index_sold_out
     set_item
-    if @item.buy.present? && @item.buy.id.present?
+    if @item.buy.present?
       redirect_to root_path
     end
   end
