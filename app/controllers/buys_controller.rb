@@ -1,9 +1,10 @@
 class BuysController < ApplicationController
 
   before_action :authenticate_user!, only: [:new]
+  before_action :set_item, only: [:new, :create]
   before_action :move_to_index_sold_out, only: [:new]
   before_action :move_to_index_my_item, only: [:new]
-  before_action :set_item, only: [:new, :create]
+
   def new
     @buy_shipping_address = BuyShippingAddress.new
   end
@@ -15,7 +16,6 @@ class BuysController < ApplicationController
       @buy_shipping_address.save
       redirect_to root_path
     else
-      @item = Item.find(params[:item_id])
       render :new
     end
   end
@@ -27,14 +27,12 @@ class BuysController < ApplicationController
   end
 
   def move_to_index_sold_out
-    set_item
     if @item.buy.present?
       redirect_to root_path
     end
   end
 
   def move_to_index_my_item
-    set_item
     if current_user == @item.user
       redirect_to root_path
     end
