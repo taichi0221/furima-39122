@@ -2,7 +2,10 @@ require 'rails_helper'
 
 RSpec.describe BuyShippingAddress, type: :model do
   before do
-    @buy_shipping_address = FactoryBot.build(:buy_shipping_address)
+    @user = FactoryBot.create(:user)
+    @item = FactoryBot.create(:item)
+    @buy_shipping_address = FactoryBot.build(:buy_shipping_address, user_id: @user.id, item_id: @item.id)
+    sleep(1) # avoid Duplicate entry error in ShippingAddress.create()
   end
 
   describe '商品購入' do
@@ -22,7 +25,7 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Post code can't be blank")
       end
-      it 'post_codeが3桁ハイフン4桁の半角文字列でないと保存できない' do
+    it 'post_codeが3桁ハイフン4桁の半角文字列でないと保存できない' do
         @buy_shipping_address.post_code = '1234567'
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Post code is invalid. Include hyphen(-)")
@@ -32,12 +35,17 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Prefecture can't be blank")
       end
+      it '都道府県に「---」が選択されている場合は保存できない' do
+        @buy_shipping_address.prefecture_id = '1'
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Prefecture can't be blank")
+      end
       it 'municipalityが空だと保存できない' do
         @buy_shipping_address.municipality = ''
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Municipality can't be blank")
       end
-      it 'addressが空だと保存できない' do
+     it 'addressが空だと保存できない' do
         @buy_shipping_address.address = ''
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Address can't be blank")
@@ -52,18 +60,23 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Tel number is too short (minimum is 10 characters)")
       end
+      it 'tel_numberが12桁以上だと保存できない' do
+        @buy_shipping_address.tel_number = '123456789012'
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Tel number is too long (maximum is 11 characters)")
+      end
       it 'tel_numberが全角数値だと保存できない' do
         @buy_shipping_address.tel_number = '１２３４５６７８９０１'
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Tel number is not a number")
       end
-      it 'user_idが空だと保存できない' do
-        @buy_shipping_address.user_id = ''
+      it 'userが紐づいていないと保存できない' do
+        @buy_shipping_address.user_id = nil
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("User can't be blank")
       end
-      it 'item_idが空だと保存できない' do
-        @buy_shipping_address.item_id = ''
+      it 'itemが紐づいていないと保存できない' do
+        @buy_shipping_address.item_id = nil
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Item can't be blank")
       end

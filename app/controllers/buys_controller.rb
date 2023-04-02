@@ -3,14 +3,12 @@ class BuysController < ApplicationController
   before_action :authenticate_user!, only: [:new]
   before_action :move_to_index_sold_out, only: [:new]
   before_action :move_to_index_my_item, only: [:new]
-
+  before_action :set_item, only: [:new, :create]
   def new
-    @item = Item.find(params[:item_id])
     @buy_shipping_address = BuyShippingAddress.new
   end
 
   def create
-    @item = Item.find(buy_params[:item_id])
     @buy_shipping_address = BuyShippingAddress.new(buy_params)
     if @buy_shipping_address.valid?
       pay_item
@@ -29,14 +27,14 @@ class BuysController < ApplicationController
   end
 
   def move_to_index_sold_out
-    @item = Item.find(params[:item_id])
+    set_item
     if @item.buy.present? && @item.buy.id.present?
       redirect_to root_path
     end
   end
 
   def move_to_index_my_item
-    @item = Item.find(params[:item_id])
+    set_item
     if current_user == @item.user
       redirect_to root_path
     end
@@ -51,4 +49,7 @@ class BuysController < ApplicationController
     )    
   end
 
+  def set_item
+    @item = Item.find(params[:item_id])
+  end
 end
