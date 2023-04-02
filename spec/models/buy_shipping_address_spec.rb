@@ -7,7 +7,7 @@ RSpec.describe BuyShippingAddress, type: :model do
 
   describe '商品購入' do
     context '商品が購入できる場合' do
-      it 'post_code, prefecture_id, municipality, address, building, tel_numberが存在すれば保存できる' do
+      it 'post_code, prefecture_id, municipality, address, building, tel_number, tokenが存在すれば保存できる' do
         expect(@buy_shipping_address).to be_valid
       end
       it 'buildingは空でも保存できる' do
@@ -67,7 +67,11 @@ RSpec.describe BuyShippingAddress, type: :model do
         @buy_shipping_address.valid?
         expect(@buy_shipping_address.errors.full_messages).to include("Item can't be blank")
       end
-      
+      it 'tokenが空だと保存できない' do
+        @buy_shipping_address.token = ''
+        @buy_shipping_address.valid?
+        expect(@buy_shipping_address.errors.full_messages).to include("Token can't be blank")
+      end      
 
     end
   end

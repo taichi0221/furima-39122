@@ -1,6 +1,6 @@
 class BuyShippingAddress
   include ActiveModel::Model
-  attr_accessor :user_id, :item_id ,:post_code, :prefecture_id, :municipality, :address, :building, :tel_number, :buy_id
+  attr_accessor :user_id, :item_id ,:post_code, :prefecture_id, :municipality, :address, :building, :tel_number, :buy_id, :token
 
   validates :user_id, presence: true
   validates :item_id, presence: true
@@ -9,7 +9,7 @@ class BuyShippingAddress
   validates :municipality, presence: true
   validates :address, presence: true
   validates :tel_number, presence: true, length: { minimum: 10, maximum: 11 }, numericality: { only_integer: true }
-
+  validates :token, presence: true
 
   def save
   
